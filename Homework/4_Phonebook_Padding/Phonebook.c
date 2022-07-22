@@ -2,23 +2,24 @@
 #include <locale.h>
 #include <string.h>
 
-#define fieldLength 16
-#define numberOfSubscribers 5
+#define FIELDLENGTH 16
+#define NUMBEROFSUBSCRIBEBRS 5
 
 struct subscriber
 {
-    char firstName[fieldLength];
-    char lastName[fieldLength];
-    char telephone[fieldLength];
+    char firstName[FIELDLENGTH];
+    char lastName[FIELDLENGTH];
+    char telephone[FIELDLENGTH];
 };
 
 void printMenu();
 char getValidValueOfMenu(char);
-void addSubscriber(struct subscriber subscribers[numberOfSubscribers]);
-void showSubscribers(struct subscriber subscribers[numberOfSubscribers]);
-void deleteSubscriber(struct subscriber subscribers[numberOfSubscribers]);
-void searchSubscriber(struct subscriber subscribers[numberOfSubscribers]);
+void addSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS]);
+void showSubscribers(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS]);
+void deleteSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS]);
+void searchSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS]);
 void cleanStdin();
+void cleanField(char *);
 
 void cleanStdin()
 {
@@ -26,6 +27,17 @@ void cleanStdin()
     do {
     s = getchar();
     } while (s != '\n' && s != EOF);
+}
+
+void cleanField(char * field)
+{
+    while ('\0' != *field){
+        if ('\n' == *field){
+            *field = '\0';
+            break;
+        }
+        field++;
+    }
 }
 
 void printMenu()
@@ -49,21 +61,24 @@ char checkValidValueOfMenu(char itemOfMenu)
     return itemOfMenu;
 }
 
-void addSubscriber(struct subscriber subscribers[numberOfSubscribers])
+void addSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
 {
-    for (int i = 0; i < numberOfSubscribers; i++)
+    for (int i = 0; i < NUMBEROFSUBSCRIBEBRS; i++)
     {
         if(0 == strcmp(subscribers[i].telephone, "\0"))
         {
             printf("Добавление абонента:\n");
             printf("Имя: ");
-            fgets(subscribers[i].firstName, fieldLength, stdin);
+            fgets(subscribers[i].firstName, FIELDLENGTH, stdin);
+            cleanField((char*)&subscribers[i].firstName);
 
             printf("Фамилия: ");
-            fgets(subscribers[i].lastName, fieldLength, stdin);
+            fgets(subscribers[i].lastName, FIELDLENGTH, stdin);
+            cleanField((char*)&subscribers[i].lastName);
 
             printf("Номер: ");
-            fgets(subscribers[i].telephone, fieldLength, stdin);
+            fgets(subscribers[i].telephone, FIELDLENGTH, stdin);
+            cleanField((char*)&subscribers[i].telephone);
 
             printf("Абонент успешно добавлен.\n");
             return;
@@ -72,18 +87,18 @@ void addSubscriber(struct subscriber subscribers[numberOfSubscribers])
     printf("Нет свободного места.\n");
 }
 
-void showSubscribers(struct subscriber subscribers[numberOfSubscribers])
+void showSubscribers(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
 {
     int size = 0;
 
     printf("      Имя       |     Фамилия     |     Телефон   \n");
-
-    for (int i = 0; i < numberOfSubscribers; i++)
-    {
+    
+    for (int i = 0; i < NUMBEROFSUBSCRIBEBRS; i++) 
+    { 
         if(0 != strcmp(subscribers[i].telephone, "\0"))
-        {
+        { 
             size++;
-            printf("%14s | %14s | %14s\n", 
+            printf("%15s | %15s |%15s\n", 
                 subscribers[i].firstName,
                 subscribers[i].lastName,
                 subscribers[i].telephone);
@@ -96,13 +111,14 @@ void showSubscribers(struct subscriber subscribers[numberOfSubscribers])
     }
 }
 
-void deleteSubscriber(struct subscriber subscribers[numberOfSubscribers])
+void deleteSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
 {
-    char deleteFirstName[fieldLength];
+    char deleteFirstName[FIELDLENGTH];
     printf("Для удаления абонента введите его имя: ");
-    fgets(deleteFirstName, fieldLength, stdin);
-    fflush(stdin);
-    for (int i = 0; i < numberOfSubscribers; i++)
+    fgets(deleteFirstName, FIELDLENGTH, stdin);
+    cleanField(deleteFirstName);
+
+    for (int i = 0; i < NUMBEROFSUBSCRIBEBRS; i++)
     {
         if(0 == strcmp(subscribers[i].firstName, deleteFirstName))
         {
@@ -116,14 +132,14 @@ void deleteSubscriber(struct subscriber subscribers[numberOfSubscribers])
     printf("Не найдено абонентов с таким именем.");
 }
 
-void searchSubscriber(struct subscriber subscribers[numberOfSubscribers])
+void searchSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
 {
-    char searchFirstName[fieldLength];
+    char searchFirstName[FIELDLENGTH];
     printf("Для поиска абонента введите его имя\n");
-    fgets(searchFirstName, fieldLength, stdin);
-    fflush(stdin);
+    fgets(searchFirstName, FIELDLENGTH, stdin);
+    cleanField(searchFirstName);
     
-    for (int i = 0; i < numberOfSubscribers; i++)
+    for (int i = 0; i < NUMBEROFSUBSCRIBEBRS; i++)
     {
         if(0 == strcmp(subscribers[i].firstName, searchFirstName))
         {
@@ -141,7 +157,7 @@ int main()
 {
     setlocale(LC_ALL, "Rus");
 
-    struct subscriber subscribers[numberOfSubscribers] = {'\0'};
+    struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS] = {'\0'};
 
     char selectedMenuItem = '0';
 
