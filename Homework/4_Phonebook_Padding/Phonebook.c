@@ -23,7 +23,7 @@ void cleanField(char *);
 
 void cleanStdin()
 {
-    int s;
+    char s;
     do {
     s = getchar();
     } while (s != '\n' && s != EOF);
@@ -71,10 +71,13 @@ void addSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
             printf("Имя: ");
             fgets(subscribers[i].firstName, FIELDLENGTH, stdin);
             cleanField((char*)&subscribers[i].firstName);
+            cleanStdin();
 
             printf("Фамилия: ");
             fgets(subscribers[i].lastName, FIELDLENGTH, stdin);
             cleanField((char*)&subscribers[i].lastName);
+            cleanStdin();
+
 
             printf("Номер: ");
             fgets(subscribers[i].telephone, FIELDLENGTH, stdin);
