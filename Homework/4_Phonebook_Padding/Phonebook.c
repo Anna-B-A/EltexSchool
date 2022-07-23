@@ -25,8 +25,8 @@ void cleanStdin()
 {
     char s;
     do {
-    s = getchar();
-    } while (s != '\n' && s != EOF);
+        s = getchar();
+    } while ('\n' != s && EOF != s);
 }
 
 void cleanField(char * field)
@@ -128,11 +128,11 @@ void deleteSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
             strcpy(subscribers[i].firstName,"\0");
             strcpy(subscribers[i].lastName,"\0");
             strcpy(subscribers[i].telephone,"\0");
-            printf("Удаление прошло успешно.");
+            printf("Удаление прошло успешно.\n");
             return;
         }
     }
-    printf("Не найдено абонентов с таким именем.");
+    printf("Не найдено абонентов с таким именем.\n");
 }
 
 void searchSubscriber(struct subscriber subscribers[NUMBEROFSUBSCRIBEBRS])
