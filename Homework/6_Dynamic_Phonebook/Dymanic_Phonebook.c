@@ -17,7 +17,7 @@ void printMenu();
 char getValidValueOfMenu(char);
 void addSubscriber(struct subscriber ** subscribers, int * size);
 void showSubscribers(struct subscriber * subscribers, int * size);
-void deleteSubscriber(struct subscriber * subscribers, int * size);
+void deleteSubscriber(struct subscriber ** subscribers, int * size);
 void searchSubscriber(struct subscriber * subscribers, int * size);
 void cleanStdin();
 void cleanField(char *);
@@ -107,22 +107,28 @@ void showSubscribers(struct subscriber * subscribers,int *size)
     }
 }
 
-void deleteSubscriber(struct subscriber * subscribers, int *size)
+void deleteSubscriber(struct subscriber ** subscribers, int *size)
 {
     char deleteFirstName[FIELDLENGTH];
     printf("Для удаления абонента введите его имя: ");
     fgets(deleteFirstName, FIELDLENGTH, stdin);
     cleanField(deleteFirstName);
 
-    for (int i = 0; i < NUMBEROFSUBSCRIBEBRS; i++)
+    for (int i = 0; i < *size; i++)
     {
-        if(0 == strcmp(subscribers[i].firstName, deleteFirstName))
+        if(0 == strcmp(&(*subscribers)[i].firstName, deleteFirstName))
         {
-            strcpy(subscribers[i].firstName,"\0");
-            strcpy(subscribers[i].lastName,"\0");
-            strcpy(subscribers[i].telephone,"\0");
+            for (int j = i+1; j < *size; j++)
+            {
+                strcpy(&(*subscribers)[j-1].firstName, &(*subscribers)[j].firstName);
+                strcpy(&(*subscribers)[j-1].lastName, &(*subscribers)[j].lastName);
+                strcpy(&(*subscribers)[j-1].telephone, &(*subscribers)[j].telephone);
+            }
+            subscribers = realloc(*subscribers, (*size)*sizeof(subscriber));
+            (*size)--;
             printf("Удаление прошло успешно.\n");
             return;
+            
         }
     }
     printf("Не найдено абонентов с таким именем.\n");
@@ -174,10 +180,10 @@ int main()
                 showSubscribers(subscribers, &sizePhonebook);
                 break;
             case '3':
-                //deleteSubscriber(&subscribers);
+                deleteSubscriber(&subscribers, &sizePhonebook);
                 break;
             case '4':
-                searchSubscriber(&subscribers, &sizePhonebook);
+                searchSubscriber(subscribers, &sizePhonebook);
                 break;
             case '5':
                 free(subscribers);
