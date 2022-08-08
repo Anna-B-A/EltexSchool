@@ -16,9 +16,9 @@ int main(int argc, char *argv[])
             exit(1); 
         }
       
-        func_ptr[i] = (int (*)(int*,int*))dlsym(library_handler, "func");
         text_func_ptr[i] = (void (*)(void))dlsym(library_handler, "text");
-        
+        func_ptr[i] = (int (*)(int*,int*))dlsym(library_handler, "func");
+
         if (!func_ptr[i] || !text_func_ptr[i]){
             fprintf(stderr,"dlsym() error: %s\n", dlerror());
             exit(1); 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         printf("Введите номер действия:\n");
 
         for (int i=1; i < argc; i++) {
-            text_func_ptr[i];
+            text_func_ptr[i]();
         }
         puts("5 - Выход\n");
 
@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
             puts("Вы хотите выйти? (y/n)\n");
             char choice = 'n';
             scanf("%c", &choice);
+            getchar();
             if('y' == choice) {
                 return 0;
             }
