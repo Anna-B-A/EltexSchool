@@ -1,7 +1,4 @@
-#include "addition.h"
-#include "subtraction.h"
-#include "multiplication.h"
-#include "division.h"
+#include "actions.h"
 #include <stdio.h>
 
 void printMenu()

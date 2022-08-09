@@ -1,1 +1,0 @@
-int mult(int, int);
