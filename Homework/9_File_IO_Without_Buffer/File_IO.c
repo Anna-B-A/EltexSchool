@@ -9,20 +9,32 @@ void ReverseOutput(int);
 
 void ReverseOutput(int fd)
 {
-    char c[1] = "";
+    char c = 'a';
+    
+    //1 solution
+    /*
     int size = lseek(fd, 0, SEEK_END);
 
-    for(int i = size; i > 0; i--) {
-        read(fd, c, sizeof(c));
-        printf("%s", c);
+    for(int i = size; i > 0; i--) {        
+        read(fd, &c, sizeof(c));
+        printf("%c", c);
         lseek(fd, -2, SEEK_CUR);
+    }*/
+    
+    //2 solution
+    int size = lseek(fd, -1, SEEK_END);
+
+    for(int i = size-1; i >= 0; i--) {    
+        lseek(fd, i, SEEK_SET);
+        read(fd, &c, sizeof(c));
+        printf("%c", c);
     }
 }
 
 int main(void)
 {
     int fd;
-    char strw[]={"Hello, World!"};
+    char strw[]={"Hello, World!\0"};
     char strr[30]={'0'};
 
     if ((fd = open("file.txt", O_CREAT| O_RDWR ))==-1) {
