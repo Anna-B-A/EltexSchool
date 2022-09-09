@@ -37,7 +37,7 @@ int main()
     
     size = sizeof(client);
 
-    sock = accept(listener, (struct sockaddr *)&client, size);
+    sock = accept(listener, (struct sockaddr *)&client, &size);
     if(sock < 0) {
         perror("accept");
         exit(1);
@@ -58,6 +58,7 @@ int main()
     }
 
     close(sock);
+    close(listener);
     
     exit(1);
 }
